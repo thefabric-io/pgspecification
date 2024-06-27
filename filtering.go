@@ -62,10 +62,11 @@ func OrderingsOnly(ss ...Specification) []Specification {
 func ComputeOrderingsOnly(ss ...Specification) string {
 	b := strings.Builder{}
 
-	b.WriteString(" order by")
+	for i, c := range OrderingsOnly(ss...) {
+		if i == 0 {
+			b.WriteString(" order by ")
+		}
 
-	for _, c := range OrderingsOnly(ss...) {
-		b.WriteString(" ")
 		b.WriteString(c.Query())
 		b.WriteString(c.Value()[0].(OrderingDirection).String())
 	}
