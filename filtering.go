@@ -12,9 +12,8 @@ func ComputeSpecifications(ss ...Specification) (string, []interface{}) {
 	b.WriteString(qConditions)
 	values = append(values, vConditions...)
 
-	qOrdering, vOrderings := ComputeOrderingsOnly(ss...)
+	qOrdering := ComputeOrderingsOnly(ss...)
 	b.WriteString(qOrdering)
-	values = append(values, vOrderings...)
 
 	qLimiting, vLimitings := ComputeLimitingsOnly(ss...)
 	b.WriteString(qLimiting)
@@ -60,17 +59,18 @@ func OrderingsOnly(ss ...Specification) []Specification {
 	return Filter(TypeOrdering, ss...)
 }
 
-func ComputeOrderingsOnly(ss ...Specification) (string, []interface{}) {
+func ComputeOrderingsOnly(ss ...Specification) string {
 	b := strings.Builder{}
-	var values []interface{}
+
+	b.WriteString(" order by")
 
 	for _, c := range OrderingsOnly(ss...) {
 		b.WriteString(" ")
 		b.WriteString(c.Query())
-		values = append(values, c.Value()...)
+		b.WriteString(c.Value()[0].(OrderingDirection).String())
 	}
 
-	return b.String(), values
+	return b.String()
 }
 
 func LimitingsOnly(ss ...Specification) []Specification {

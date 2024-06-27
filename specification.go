@@ -29,6 +29,20 @@ type OrderingSpecification interface {
 	Specification
 }
 
+const OrderingDirectionAsc OrderingDirection = "asc"
+const OrderingDirectionDesc OrderingDirection = "desc"
+const orderingDirectionZero OrderingDirection = ""
+
+type OrderingDirection string
+
+func (d OrderingDirection) IsZero() bool {
+	return d == orderingDirectionZero
+}
+
+func (d OrderingDirection) String() string {
+	return string(d)
+}
+
 type LimitSpecification interface {
 	Specification
 }
